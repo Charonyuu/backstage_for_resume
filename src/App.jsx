@@ -1,34 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React from 'react'
+import Login from './component/login'
+import HomePage from './component/homePage'
+import AboutPage from './component/aboutPage'
+import ExperiencePage from './component/experiencePage'
+import PortfilioPage from './component/portfilioPage'
+import NotePage from './component/notePage'
+import styles from './app.module.scss'
+// import { AuthProvider } from "../contexts/AuthContext"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "react-router-dom";
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+  <Router>
+    <div className={styles.app}>
+      <Switch>
+        <Route path="/public">
+          <Login />
+        </Route>
+        <PrivateRoute path="/protected">
+          <HomePage />
+        </PrivateRoute>
+      </Switch>
     </div>
+  </Router>
   )
 }
 
-export default App
+export default App;
+
+// screen if you're not yet authenticated.
+function PrivateRoute({ children, ...rest }) {
+  let auth = useAuth();
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        auth.user ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
