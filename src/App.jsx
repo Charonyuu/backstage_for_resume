@@ -20,7 +20,7 @@ function App() {
   <Router>
     <div className={styles.app}>
       <Switch>
-        <Route exact path="/public">
+        <Route exact path="/">
           <Login />
         </Route>
         <PrivateRoute path="/protected">
