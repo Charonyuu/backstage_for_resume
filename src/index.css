@@ -6,3 +6,7 @@
 textarea:focus, input:focus{
     outline: none;
 }
+a{
+  color: unset;
+  text-decoration: unset;
+}

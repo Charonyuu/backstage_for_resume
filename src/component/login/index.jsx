@@ -2,9 +2,11 @@ import {useRef, useState} from 'react'
 import styles from "./index.module.scss"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../firebaseConfig';
-
-
+import { useAuth } from "../../context/AuthContext"
+import { useHistory } from 'react-router-dom';
 function Login() {
+  const { login } = useAuth()
+  const history = useHistory();
   const [error,setError] = useState('')
   const account_input = useRef(null) 
   const password_input = useRef(null) 
@@ -12,9 +14,9 @@ function Login() {
     if(!account_input.current.value || !password_input.current.value) return setError('請輸入帳號或密碼')
     setError('')
     signInWithEmailAndPassword(auth, account_input.current.value, password_input.current.value)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
+    .then(() => {
+      login();
+      history.push('/')
     })
     .catch((error) => {
       setError('密碼錯誤')

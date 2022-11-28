@@ -6,12 +6,13 @@ import ExperiencePage from './component/experiencePage'
 import PortfilioPage from './component/portfilioPage'
 import NotePage from './component/notePage'
 import styles from './app.module.scss'
-// import { AuthProvider } from "../contexts/AuthContext"
+import { useAuth,AuthProvider } from "./context/AuthContext"
+import Nav from './component/nav'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+  Redirect,
 } from "react-router-dom";
 
 
@@ -19,14 +20,38 @@ function App() {
   return (
   <Router>
     <div className={styles.app}>
-      <Switch>
-        <Route exact path="/">
-          <Login />
-        </Route>
-        <PrivateRoute path="/protected">
-          <HomePage />
-        </PrivateRoute>
-      </Switch>
+      <AuthProvider>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/">
+            <Nav>
+              <HomePage />
+            </Nav>
+          </Route>
+          <PrivateRoute  path="/about">
+            <Nav>
+              <AboutPage />
+            </Nav>
+          </PrivateRoute>
+          <PrivateRoute  path="/experience">
+            <Nav>
+              <ExperiencePage />
+            </Nav>
+          </PrivateRoute>
+          <PrivateRoute  path="/portfilio">
+            <Nav>
+              <PortfilioPage />
+            </Nav>
+          </PrivateRoute>
+          <PrivateRoute  path="/note">
+            <Nav>
+              <NotePage />
+            </Nav>
+          </PrivateRoute>
+        </Switch>
+      </AuthProvider>
     </div>
   </Router>
   )
@@ -36,18 +61,17 @@ export default App;
 
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }) {
-  let auth = useAuth();
+  const { loginStatus } = useAuth()
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        auth.user ? (
+        loginStatus ? (
           children
         ) : (
           <Redirect
             to={{
               pathname: "/login",
-              state: { from: location }
             }}
           />
         )

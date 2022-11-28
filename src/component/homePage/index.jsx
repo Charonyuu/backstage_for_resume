@@ -37,6 +37,8 @@ export default function HomePage() {
   // },[])
   return (
     <div>
+        123
+        
       {/* <input type="file" onChange={handleChange} accept="/image/*" />
 <button onClick={handleUpload}>Upload to Firebase</button>
 <p>{percent} "% done"</p> */}
