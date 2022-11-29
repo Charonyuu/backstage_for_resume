@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getDoc,doc,setDoc } from "firebase/firestore"; 
+import { db } from "../firebaseConfig";
+
 const AuthContext = React.createContext()
 
 export function useAuth() {
@@ -12,7 +14,14 @@ export function AuthProvider({ children }) {
   function login() {
     setLoginStatus(true)
   }
-
+  const fetch_User_Data = async(type) =>{
+    const querySnapshot = await getDoc(doc(db, "user",type));
+    return querySnapshot.data();
+  }
+  const update_User_Data = async(type,data) =>{
+    await setDoc(doc(db, "user", type), data);
+    alert('儲存成功')
+  }
   // function logout() {
   //   return auth.signOut()
   // }
@@ -24,6 +33,8 @@ export function AuthProvider({ children }) {
   const value = {
     loginStatus,
     login,
+    fetch_User_Data,
+    update_User_Data
   }
 
   return (

@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../firebaseConfig';
 import { useAuth } from "../../context/AuthContext"
 import { useHistory } from 'react-router-dom';
+import logo from '../../assets/charonyu-logo.png'
 function Login() {
   const { login } = useAuth()
   const history = useHistory();
@@ -26,6 +27,9 @@ function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
+        <div className={styles.picture}>
+          <img src={logo} alt='logo'/>
+        </div>
         <h2>LOGIN PAGE</h2>
         <h3>Account</h3>
         <input type={'text'} ref={account_input} placeholder='請輸入帳號'/>
