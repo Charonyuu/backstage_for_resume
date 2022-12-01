@@ -2,11 +2,11 @@ import React, { useRef,useEffect, useState } from 'react'
 import styles from "./index.module.scss"
 
 import { useAuth } from "../../context/AuthContext"
-import { storage ,db } from "../../firebaseConfig";
+import { storage } from "../../firebaseConfig";
 
 import {ReactComponent as Upload} from '../../assets/upload_icon.svg';
 import {ReactComponent as Delete} from '../../assets/delete_icon.svg';
-import { Small_Btn,Row_Input,Textarea } from '../things';
+import { Small_Btn,Row_Input,Textarea,Modal } from '../things';
 
 //storage
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
@@ -20,6 +20,7 @@ export default function HomePage() {
     en_name:'',
     en_title:'',
     en_introduction:'',
+    contact: {github:'',linkedin:'',phone:'',email:''},
     picture_url: [],
   })
   const [input, setInput] = useState({
@@ -29,15 +30,24 @@ export default function HomePage() {
     en_name:'',
     en_title:'',
     en_introduction:'',
+    contact: {github:'',linkedin:'',phone:'',email:''},
     picture_url: [],
   })
   const [loading, setLoading] = useState(true)
   const [isSetting, setIsSetting] = useState(false)
+  const [modalOpen,setModalOpen] = useState(false)
   const imgUpload_ref = useRef(null)
+  
+  //contact modal
+  const input_phone_ref = useRef(null) 
+  const input_email_ref = useRef(null) 
+  const input_github_ref = useRef(null) 
+  const input_linkedin_ref = useRef(null) 
 
-  const handleUpload = () => {
-    imgUpload_ref.current.click();
-  };
+
+  
+
+  // 刪除圖片
   const handleDeletePic = async(name) =>{
     const temp_url = [...input.picture_url]
     const newArray = temp_url.filter((pic)=> pic.name !== name)
@@ -50,7 +60,13 @@ export default function HomePage() {
     });
 
   }
+  //上傳圖片按鈕
+  const handleUpload = () => {
+    imgUpload_ref.current.click();
+  };
 
+  //上傳圖片過程
+  const [percent, setPercent] = useState(0);
   function handleChange(event) {
     const file = event.target.files[0]
     const storageRef = ref(storage, `image/home/${file.name}`);
@@ -72,15 +88,32 @@ export default function HomePage() {
     });
   }
 
+  //取消homepage編輯
   const handle_reset = () =>{
     setInput(data)
     setIsSetting(false)
   }
+  
+  //儲存homepage編輯
   const handle_save = () =>{
     update_User_Data('profile',input)
     setIsSetting(false)
   }
-  const [percent, setPercent] = useState(0);
+
+  //取消constact編輯關閉彈跳視窗
+  const handle_contact_change = (e,type) =>{
+    // const temp =  {}
+    // console.log(temp);
+    // const result = 
+    // console.log(result);
+    
+  }
+
+  //儲存contact編輯
+  const handle_modal_save = () =>{
+    const temp = [...input.contact]
+
+  }
   
   
   useEffect(()=>{
@@ -91,6 +124,7 @@ export default function HomePage() {
       setLoading(false)
     })
   },[])
+
   return (
     <div className={styles.home}>
         <h1>首頁</h1>
@@ -126,6 +160,18 @@ export default function HomePage() {
           <Textarea title={'中文簡介'} setting={isSetting} value={input.zh_introduction} func={(e) => setInput({ ...input, zh_introduction: e.target.value })}/>
           <Textarea title={'英文簡介'} setting={isSetting} value={input.en_introduction} func={(e) => setInput({ ...input, en_introduction: e.target.value })}/>
           
+          <div className={styles.contact}>
+            <p>聯絡方式</p>
+            <div className={styles.row}>
+              <Row_Input title={'phone'} setting={isSetting} value={input.contact.phone} func={(e) => setInput({ ...input, contact: {...input.contact,'phone': e.target.value}})}/>
+              <Row_Input title={'email'} setting={isSetting} value={input.contact.email} func={(e) => setInput({ ...input, contact: {...input.contact,'email': e.target.value}})}/>
+            </div>
+            <div className={styles.row}>
+              <Row_Input title={'github'} setting={isSetting} value={input.contact.github} func={(e) => setInput({ ...input, contact: {...input.contact,'github': e.target.value}})}/>
+              <Row_Input title={'linkedin'} setting={isSetting} value={input.contact.linkedin} func={(e) => setInput({ ...input, contact: {...input.contact,'linkedin': e.target.value}})}/>
+            </div>
+          </div>
+
           <div className={styles.button_row}>
             {!isSetting ?
               <Small_Btn title='修改' func={()=>setIsSetting(true)}/>

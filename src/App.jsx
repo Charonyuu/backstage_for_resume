@@ -3,6 +3,7 @@ import Login from './component/login'
 import HomePage from './component/homePage'
 import AboutPage from './component/aboutPage'
 import ExperiencePage from './component/experiencePage'
+import ExperienceEditPage from './component/experienceEditPage'
 import PortfilioPage from './component/portfilioPage'
 import NotePage from './component/notePage'
 import styles from './app.module.scss'
@@ -35,11 +36,16 @@ function App() {
               <AboutPage />
             </Nav>
           </PrivateRoute>
-          <PrivateRoute  path="/experience">
+          <Route  path="/experience">
             <Nav>
               <ExperiencePage />
             </Nav>
-          </PrivateRoute>
+          </Route>
+          <Route  path="/edit/:company_name">
+            <Nav>
+              <ExperienceEditPage />
+            </Nav>
+          </Route>
           <PrivateRoute  path="/portfilio">
             <Nav>
               <PortfilioPage />

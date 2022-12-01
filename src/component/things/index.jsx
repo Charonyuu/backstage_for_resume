@@ -4,7 +4,7 @@ export function Input({title,value,func,setting}) {
   return (
     <>
         <p>{title}</p>
-        <input type={'text'} value={value} onChange={func}/>
+        <input className={!setting && styles.notSetting} type={'text'} value={value} onChange={func}/>
     </>
   )
 }
@@ -13,17 +13,17 @@ export function Row_Input({title,value,func,setting}) {
   return (
     <div className={styles.row_item}>
         <p>{title}</p>
-        <input type={'text'} value={value} onChange={func} readOnly={!setting}/>
+        <input className={!setting && styles.notSetting} type={'text'} value={value} onChange={func} readOnly={!setting}/>
     </div>
   )
 }
 
 export function Textarea({title,value,func,setting}) {
-    
   return (
     <>
         <p>{title}</p>
         <textarea 
+            className={!setting && styles.notSetting}
             value={value}
             onChange={func}
             readOnly={!setting}
@@ -53,5 +53,13 @@ export function Small_Btn({title,func}) {
     
   return (
     <div className={styles.btn} onClick={func}>{title}</div>
+  )
+}
+
+export function Modal({children}) {
+  return (
+    <div className={styles.modal__backdrop}>
+        {children}
+    </div>
   )
 }

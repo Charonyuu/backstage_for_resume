@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
-import { getDoc,doc,setDoc } from "firebase/firestore"; 
+import { getDoc,doc,setDoc,getDocs, collection } from "firebase/firestore"; 
 import { db } from "../firebaseConfig";
 
 const AuthContext = React.createContext()
@@ -22,6 +22,18 @@ export function AuthProvider({ children }) {
     await setDoc(doc(db, "user", type), data);
     alert('儲存成功')
   }
+  const fetch_Experience_Data = async() =>{
+    const querySnapshot = await getDocs(collection(db, "user", 'experience','experience_list'));
+    let array = []
+    querySnapshot.forEach((doc) => {
+      array.push(doc.data());
+    });
+    return array;
+  }
+  const update_User_Experience_Data = async(type,data) =>{
+    await setDoc(doc(db, "user", 'experience','experience_list',type), data);
+    alert('儲存成功')
+  }
   // function logout() {
   //   return auth.signOut()
   // }
@@ -34,7 +46,9 @@ export function AuthProvider({ children }) {
     loginStatus,
     login,
     fetch_User_Data,
-    update_User_Data
+    update_User_Data,
+    fetch_Experience_Data,
+    update_User_Experience_Data,
   }
 
   return (
