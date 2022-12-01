@@ -6,21 +6,27 @@
     min-height: 100vh;
     overflow: auto;
     padding: 50px 100px;
+    
     & .title{
         width: 100%;
         text-align: center;
         position: relative;
-        & > svg{
-            cursor: pointer;
-            color: white;
+        & a{
+            font-size: 30px;
+            height: 30px;
             position: absolute;
             right: 0;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 30px;
             &:hover{
                 color: #646cff;
             }
+        }
+        & > svg{
+            cursor: pointer;
+            color: white;
+            
+            
         }
     }
     & .work_card{
@@ -38,15 +44,15 @@
             position: absolute;
             & a{
                 font-size: 24px;
+                &:hover{
+                    color: #646cff;
+                }
             }
             & > svg{
                 cursor: pointer;
                 font-size: 24px;
                 margin: 0 10px;
-                &:nth-child(1):hover{
-                    color: #646cff;
-                }
-                &:nth-child(2):hover{
+                &:hover{
                     color: red;
                 }
             }

@@ -6,23 +6,14 @@ import { storage } from "../../firebaseConfig";
 
 import {ReactComponent as Upload} from '../../assets/upload_icon.svg';
 import {ReactComponent as Delete} from '../../assets/delete_icon.svg';
-import { Small_Btn,Row_Input,Textarea,Modal } from '../things';
+import { Small_Btn,Row_Input,Textarea } from '../things';
 
 //storage
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 
 export default function HomePage() {
   const { fetch_User_Data , update_User_Data } = useAuth();
-  const [data, setData] = useState({
-    zh_name:'',
-    zh_title:'',
-    zh_introduction:'',
-    en_name:'',
-    en_title:'',
-    en_introduction:'',
-    contact: {github:'',linkedin:'',phone:'',email:''},
-    picture_url: [],
-  })
+  const [data, setData] = useState()
   const [input, setInput] = useState({
     zh_name:'',
     zh_title:'',
@@ -35,18 +26,8 @@ export default function HomePage() {
   })
   const [loading, setLoading] = useState(true)
   const [isSetting, setIsSetting] = useState(false)
-  const [modalOpen,setModalOpen] = useState(false)
   const imgUpload_ref = useRef(null)
   
-  //contact modal
-  const input_phone_ref = useRef(null) 
-  const input_email_ref = useRef(null) 
-  const input_github_ref = useRef(null) 
-  const input_linkedin_ref = useRef(null) 
-
-
-  
-
   // 刪除圖片
   const handleDeletePic = async(name) =>{
     const temp_url = [...input.picture_url]
@@ -99,25 +80,9 @@ export default function HomePage() {
     update_User_Data('profile',input)
     setIsSetting(false)
   }
-
-  //取消constact編輯關閉彈跳視窗
-  const handle_contact_change = (e,type) =>{
-    // const temp =  {}
-    // console.log(temp);
-    // const result = 
-    // console.log(result);
-    
-  }
-
-  //儲存contact編輯
-  const handle_modal_save = () =>{
-    const temp = [...input.contact]
-
-  }
-  
   
   useEffect(()=>{
-    setLoading(false)
+    setLoading(true)
     fetch_User_Data('profile').then((data)=>{
       setData(data)
       setInput(data)

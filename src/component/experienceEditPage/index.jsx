@@ -9,14 +9,8 @@ export default function ExperienceEditPage() {
   const {update_User_Experience_Data} = useAuth()
   const [data,setData] = useState()
   const [modalOpen,setModalOpen] = useState({open: false, id: '',data:null})
-  const tool_ref = useRef(null)
-  const exhibit_web_name_ref = useRef(null)
-  const exhibit_web_url_ref = useRef(null)
-  const exhibit_web_content_ref = useRef(null)
-
-
   const [input,setInput] =useState({
-      sort: 0,
+      startDate:'',endDate:'',
       zh_company_name:'',en_company_name:'',
       zh_title:'',en_title:'',
       zh_year:'',en_year:'',
@@ -24,23 +18,11 @@ export default function ExperienceEditPage() {
       tools:[],
       exhibit: []
     })
+  const tool_ref = useRef(null)
+  const exhibit_web_name_ref = useRef(null)
+  const exhibit_web_url_ref = useRef(null)
+  const exhibit_web_content_ref = useRef(null)
   const [isSetting,setIsSetting] = useState(false)
-  const location = useLocation()
-  useEffect(()=>{
-    const state_data = location.state || {
-      sort: 0,
-      zh_company_name:'',en_company_name:'',
-      zh_title:'',en_title:'',
-      zh_year:'',en_year:'',
-      zh_introduction:'',zh_introduction:'',
-      tools:[],
-      exhibit: []
-    }
-    console.log(state_data);
-    setData(state_data)
-    setInput(state_data)
-    console.log(input);
-  },[])
 
   const handle_reset = () =>{
     setInput(data)
@@ -60,7 +42,7 @@ export default function ExperienceEditPage() {
     if (!exhibit_web_name_ref.current.value ) return;
     const temp = [...input.exhibit]
     temp.push({name:exhibit_web_name_ref.current.value,url:exhibit_web_url_ref.current.value,content:exhibit_web_content_ref.current.value})
-    setInput({ ...input, exhibit: temp })
+    setInput({ ...input, exhibit: temp})
     alert('儲存成功')
     handle_modal_close()
   }
@@ -90,21 +72,43 @@ export default function ExperienceEditPage() {
     setInput({ ...input, exhibit: result })
   }
 
+
+  const location = useLocation()
+  useEffect(()=>{
+    const state_data = location.state || {
+      startDate:'',endDate:'',
+      zh_company_name:'',en_company_name:'',
+      zh_title:'',en_title:'',
+      zh_year:'',en_year:'',
+      zh_introduction:'',en_introduction:'',
+      tools:[],
+      exhibit: []
+    }
+    console.log(state_data);
+    setData(state_data)
+    setInput(state_data)
+    console.log(input);
+  },[])
+
+
   return  (
     <div className={styles.home}>
         <h1>工作經歷修改</h1>
         <div className={styles.form}>
-          
           <div className={styles.row}>
-              <Row_Input title={'中文公司名稱'} setting={isSetting} value={input.zh_company_name} func={(e) => setInput({ ...input, zh_company_name: e.target.value })}/>
-              <Row_Input title={'英文公司名稱'} setting={isSetting} value={input.en_company_name} func={(e) => setInput({ ...input, en_company_name: e.target.value })}/>
+              <Row_Input title={'開始工作日期'} setting={isSetting} value={input.startDate} func={(e) => setInput({ ...input, startDate: e.target.value })} placeholder={"西元年/月"}/>
+              <Row_Input title={'結束工作日期'} setting={isSetting} value={input.endDate} func={(e) => setInput({ ...input, endDate: e.target.value })}  placeholder={"西元年/月"}/>
           </div>
           <div className={styles.row}>
-            <Row_Input title={'中文公司職位'} setting={isSetting} value={input.zh_title} func={(e) => setInput({ ...input, zh_title: e.target.value })}/>
-            <Row_Input title={'英文公司職位'} setting={isSetting} value={input.en_title} func={(e) => setInput({ ...input, en_title: e.target.value })}/>
+              <Row_Input title={'中文公司名稱'} setting={isSetting} value={input.zh_company_name} func={(e) => setInput({ ...input, zh_company_name: e.target.value })} placeholder={"輸入名稱"}/>
+              <Row_Input title={'英文公司名稱'} setting={isSetting} value={input.en_company_name} func={(e) => setInput({ ...input, en_company_name: e.target.value })} placeholder={"輸入名稱"}/>
           </div>
-          <Textarea title={'中文公司簡介'} setting={isSetting} value={input.zh_introduction} func={(e) => setInput({ ...input, zh_introduction: e.target.value })}/>
-          <Textarea title={'英文公司簡介'} setting={isSetting} value={input.en_introduction} func={(e) => setInput({ ...input, en_introduction: e.target.value })}/>
+          <div className={styles.row}>
+            <Row_Input title={'中文公司職位'} setting={isSetting} value={input.zh_title} func={(e) => setInput({ ...input, zh_title: e.target.value })} placeholder={"輸入職位"}/>
+            <Row_Input title={'英文公司職位'} setting={isSetting} value={input.en_title} func={(e) => setInput({ ...input, en_title: e.target.value })} placeholder={"輸入職位"}/>
+          </div>
+          <Textarea title={'中文公司簡介'} setting={isSetting} value={input.zh_introduction} func={(e) => setInput({ ...input, zh_introduction: e.target.value })} placeholder={"輸入內容..."}/>
+          <Textarea title={'英文公司簡介'} setting={isSetting} value={input.en_introduction} func={(e) => setInput({ ...input, en_introduction: e.target.value })} placeholder={"輸入內容..."}/>
           <div className={styles.tool_title}>
             使用工具
             {isSetting && <AiOutlineRight onClick={()=>setModalOpen({open:true,id:'tool',data:null})}/>}

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
-import { getDoc,doc,setDoc,getDocs, collection } from "firebase/firestore"; 
+import { getDoc,doc,setDoc,getDocs, collection, deleteDoc } from "firebase/firestore"; 
 import { db } from "../firebaseConfig";
 
 const AuthContext = React.createContext()
@@ -34,6 +34,10 @@ export function AuthProvider({ children }) {
     await setDoc(doc(db, "user", 'experience','experience_list',type), data);
     alert('儲存成功')
   }
+  const delete_User_Experience_Company = async(delete_name)=>{
+    await deleteDoc(doc(db, "user", 'experience','experience_list',delete_name))
+    alert('刪除成功')
+  }
   // function logout() {
   //   return auth.signOut()
   // }
@@ -49,6 +53,7 @@ export function AuthProvider({ children }) {
     update_User_Data,
     fetch_Experience_Data,
     update_User_Experience_Data,
+    delete_User_Experience_Company,
   }
 
   return (

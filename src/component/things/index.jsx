@@ -4,27 +4,34 @@ export function Input({title,value,func,setting}) {
   return (
     <>
         <p>{title}</p>
-        <input className={!setting && styles.notSetting} type={'text'} value={value} onChange={func}/>
+        <input className={!setting ? styles.notSetting : null} type={'text'} value={value} onChange={func}/>
     </>
   )
 }
 
-export function Row_Input({title,value,func,setting}) {
+export function Row_Input({title,value,func,setting,placeholder}) {
+    const settingStatus = setting || true
   return (
     <div className={styles.row_item}>
         <p>{title}</p>
-        <input className={!setting && styles.notSetting} type={'text'} value={value} onChange={func} readOnly={!setting}/>
+        <input 
+            className={!settingStatus ? styles.notSetting : null} 
+            type={'text'} value={value} 
+            onChange={func} 
+            placeholder={placeholder}
+            readOnly={!settingStatus}/>
     </div>
   )
 }
 
-export function Textarea({title,value,func,setting}) {
+export function Textarea({title,value,func,setting,placeholder}) {
   return (
     <>
         <p>{title}</p>
         <textarea 
-            className={!setting && styles.notSetting}
+            className={!setting ? styles.notSetting : null}
             value={value}
+            placeholder={placeholder}
             onChange={func}
             readOnly={!setting}
         />

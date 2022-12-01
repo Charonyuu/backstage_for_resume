@@ -31,17 +31,17 @@ function App() {
               <HomePage />
             </Nav>
           </Route>
-          <PrivateRoute  path="/about">
+          <Route  path="/about">
             <Nav>
               <AboutPage />
             </Nav>
-          </PrivateRoute>
+          </Route>
           <Route  path="/experience">
             <Nav>
               <ExperiencePage />
             </Nav>
           </Route>
-          <Route  path="/edit/:company_name">
+          <Route  path="/experience_edit/:company_name">
             <Nav>
               <ExperienceEditPage />
             </Nav>
