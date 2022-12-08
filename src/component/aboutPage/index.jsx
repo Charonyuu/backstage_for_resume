@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from "./index.module.scss"
 import { useAuth } from "../../context/AuthContext"
-import { Input,Row_Input,Small_Btn ,Textarea ,Modal} from '../things'
-import { useLocation } from 'react-router-dom'
-import { AiOutlineEdit,AiFillDelete,AiOutlineRight } from "react-icons/ai";
+import { Small_Btn,Modal} from '../things'
+import { AiOutlineEdit,AiFillDelete,AiOutlineRight,AiOutlinePlus } from "react-icons/ai";
 
 export default function AboutPage() {
-  const {fetch_User_Data,update_User_Data} = useAuth()
+  const {fetch_User_Doc_Data,update_User_Doc_Data} = useAuth()
   const [data,setData] = useState()
   const [loading,setLoading] = useState(true)
   const [modalOpen,setModalOpen] = useState({open:false,title:'',data:null})
 
   const [input,setInput] =useState({
-    zh_skill:[{title:'',content:[]}],
+    zh_skill:[],
     zh_target:[],
     en_skill:[],
     en_target:[],
@@ -26,19 +25,23 @@ export default function AboutPage() {
 
   const handle_save = ()=>{
     setIsSetting(false)
-    update_User_Data('about',input)
+    update_User_Doc_Data('about',input)
   }
 
   const handle_close_modal = () =>{
     setModalOpen({open:false,data:null,title:''})
   }
   
-
+  const handle_delete_skill = (type,id) =>{
+    const temp = [...input[type]]
+    const result = temp.filter((item) => item.id !== id)
+    setInput({...input,[type]:result});
+  }
   
 
   useEffect(()=>{
     setLoading(true)
-    fetch_User_Data('about').then((data)=>{
+    fetch_User_Doc_Data('about').then((data)=>{
       setData(data)
       setInput(data)
       setLoading(false)
@@ -51,7 +54,10 @@ export default function AboutPage() {
         <div className={styles.form}>
 
           <div className={styles.skill_title}>
-            中文Skill
+            <h3>中文Skill</h3>
+             {isSetting ?
+            <AiOutlinePlus onClick={()=>setModalOpen({open:true,title:'zh_skill',data:null})}/>
+            :null }
           </div>
           <div className={styles.skill_list}>
             {input.zh_skill.length > 0 && input.zh_skill.map((skill,idx) =>
@@ -59,7 +65,7 @@ export default function AboutPage() {
                 <span className={styles.skill_name}>{skill.title} </span>
                 {isSetting &&
                   <div className={styles.icons_list}>
-                    <AiOutlineEdit className={styles.edit} onClick={()=>setModalOpen({open:true,title:skill.title,data:skill.content})}/>
+                    <AiOutlineEdit className={styles.edit} onClick={()=>setModalOpen({open:true,title:'zh_skill',data:skill})}/>
                     <AiFillDelete className={styles.delete} onClick={()=>handle_delete_skill(skill.title)}/>
                   </div>   
                 }
@@ -67,7 +73,10 @@ export default function AboutPage() {
             )}
           </div>
           <div className={styles.skill_title}>
-            英文Skill
+            <h3>英文Skill</h3>
+             {isSetting ?
+            <AiOutlinePlus onClick={()=>setModalOpen({open:true,title:'en_skill',data:null})}/>
+            :null }
           </div>
           <div className={styles.skill_list}>
             {input.en_skill.length > 0 && input.en_skill.map((skill,idx) =>
@@ -76,7 +85,7 @@ export default function AboutPage() {
                 {isSetting &&
                   <div className={styles.icons_list}>
                     <AiOutlineEdit className={styles.edit} onClick={()=>setModalOpen({open:true,title:'en_skill',data:skill})}/>
-                    <AiFillDelete className={styles.delete} onClick={()=>handle_delete_skill(skill.title)}/>
+                    <AiFillDelete className={styles.delete} onClick={()=>handle_delete_skill('en_skill',skill.id)}/>
                   </div>   
                 }
               </div>
@@ -84,15 +93,15 @@ export default function AboutPage() {
           </div>
           <div className={styles.target_title}>
             <p>中文Target</p>
-            {isSetting &&
+            {isSetting ?
             <AiOutlineRight onClick={()=>setModalOpen({...modalOpen,open:true,title:'zh_target',data:input.zh_target})}/> 
-            }
+            : null}
           </div>
           <div className={styles.target_title}>
             <p>英文Target</p>
-            {isSetting &&
+            {isSetting ?
             <AiOutlineRight onClick={()=>setModalOpen({...modalOpen,open:true,title:'en_target',data:input.en_target})}/>
-            }
+            : null}
           </div>
          
 
@@ -179,7 +188,7 @@ const TargetModal = (props) =>{
 )}
 
 const SkillModal = (props) =>{
-  const { input, setInput, modalOpen, setModalOpen,closeModal} = props
+  const { input, setInput, modalOpen,closeModal} = props
   const [titleInput,setTitleInput] = useState({sort:0,title:''})
   const [contentInput,setContentInput] = useState('')
   const [list,setList] = useState([])
@@ -200,8 +209,13 @@ const SkillModal = (props) =>{
 
   const handle_modal_save = () =>{
     const temp = [...input[skill]]
-    const place = temp.findIndex((item)=> item.id === modalOpen.data.id)
-    temp[place] = {id:modalOpen.data.id,sort: titleInput.sort,title:titleInput.title,content:list}
+    console.log(modalOpen.data);
+    if (modalOpen.data) {
+      const place = temp.findIndex((item)=> item.id === modalOpen.data.id)
+      temp[place] = {id:modalOpen.data.id,sort: titleInput.sort,title:titleInput.title,content:list}
+     }else{
+      temp.push({id:new Date().getTime().toString(),sort: titleInput.sort,title:titleInput.title,content:list})
+     }
     setInput({...input,[skill]:temp})
     closeModal();
   }
@@ -241,7 +255,7 @@ const SkillModal = (props) =>{
         </div>
         <div className={styles.button_row}>
           <Small_Btn title='取消' func={closeModal}/>
-          <Small_Btn title='完成' func={()=>handle_modal_save(modalOpen.data.id)}/>
+          <Small_Btn title='完成' func={handle_modal_save}/>
         </div>
     </div>
   </Modal>

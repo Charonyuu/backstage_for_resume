@@ -12,7 +12,7 @@ import { Small_Btn,Row_Input,Textarea } from '../things';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 
 export default function HomePage() {
-  const { fetch_User_Data , update_User_Data } = useAuth();
+  const { fetch_User_Doc_Data , update_User_Doc_Data } = useAuth();
   const [data, setData] = useState()
   const [input, setInput] = useState({
     zh_name:'',
@@ -77,13 +77,13 @@ export default function HomePage() {
   
   //儲存homepage編輯
   const handle_save = () =>{
-    update_User_Data('profile',input)
+    update_User_Doc_Data('profile',input)
     setIsSetting(false)
   }
   
   useEffect(()=>{
     setLoading(true)
-    fetch_User_Data('profile').then((data)=>{
+    fetch_User_Doc_Data('profile').then((data)=>{
       setData(data)
       setInput(data)
       setLoading(false)

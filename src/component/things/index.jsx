@@ -1,25 +1,29 @@
 import styles from './index.module.scss'
 
-export function Input({title,value,func,setting}) {
+export function Input({title,value,func,setting,placeholder}) {
   return (
     <>
         <p>{title}</p>
-        <input className={!setting ? styles.notSetting : null} type={'text'} value={value} onChange={func}/>
+        <input 
+          className={!setting ? styles.notSetting : null} 
+          type={'text'} value={value} 
+          onChange={func}
+          placeholder={placeholder}
+          readOnly={!setting} />
     </>
   )
 }
 
 export function Row_Input({title,value,func,setting,placeholder}) {
-    const settingStatus = setting || true
   return (
     <div className={styles.row_item}>
         <p>{title}</p>
         <input 
-            className={!settingStatus ? styles.notSetting : null} 
+            className={!setting ? styles.notSetting : null} 
             type={'text'} value={value} 
             onChange={func} 
             placeholder={placeholder}
-            readOnly={!settingStatus}/>
+            readOnly={!setting}/>
     </div>
   )
 }

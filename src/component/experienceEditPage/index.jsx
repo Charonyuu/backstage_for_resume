@@ -13,7 +13,6 @@ export default function ExperienceEditPage() {
       startDate:'',endDate:'',
       zh_company_name:'',en_company_name:'',
       zh_title:'',en_title:'',
-      zh_year:'',en_year:'',
       zh_introduction:'',en_introduction:'',
       tools:[],
       exhibit: []
@@ -79,7 +78,6 @@ export default function ExperienceEditPage() {
       startDate:'',endDate:'',
       zh_company_name:'',en_company_name:'',
       zh_title:'',en_title:'',
-      zh_year:'',en_year:'',
       zh_introduction:'',en_introduction:'',
       tools:[],
       exhibit: []
