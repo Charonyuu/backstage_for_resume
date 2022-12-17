@@ -48,7 +48,7 @@ const Quill_Container = ({input,setInput}) =>{
   useEffect(() => {
     if (quill) {
       quill.clipboard.dangerouslyPasteHTML(input.content);
-      // quill.getModule('toolbar').addHandler('image', selectLocalImage);
+      quill.getModule('toolbar').addHandler('image', selectLocalImage);
       quill.on('text-change', () => {
         setInput({ ...input, content: quill.root.innerHTML})
       });
