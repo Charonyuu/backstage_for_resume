@@ -38,7 +38,6 @@ export default function ExperienceEditPage() {
 }
 
 import { useQuill } from 'react-quilljs';
-import "quill/dist/quill.snow.css"; 
 import { storage } from "../../firebaseConfig";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
