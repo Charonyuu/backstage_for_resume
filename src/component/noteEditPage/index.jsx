@@ -73,8 +73,8 @@ const Quill_Container = ({input,setInput}) =>{
     if (quill) {
       quill.clipboard.dangerouslyPasteHTML(input.content);
       quill.getModule('toolbar').addHandler('image', selectLocalImage);
-      quill.on('text-change', (delta, oldDelta, source) => {
-        setInput({ ...input, content: quillRef.current.firstChild.innerHTML})
+      quill.on('text-change', () => {
+        setInput({ ...input, content: quill.root.innerHTML})
       });
     }
     
@@ -105,7 +105,6 @@ const Keyword_Container = ({input,setInput}) =>{
       const result = temp.filter((keyword)=> keyword !== keyword_name)
       setInput({ ...input, keyword: result })
     }
-    console.log(input);
   return(
     <>
       <div className={styles.keywordInput}>
