@@ -56,12 +56,10 @@ export default function HomePage() {
     uploadTask.on("state_changed",(snapshot) => {
       const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       setPercent(percent);
-      console.log(percent);
     },
     (err) => console.log(err),
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-        console.log(url);
         const temp_url = [...input.picture_url]
         temp_url.push({name: file.name, url}) 
         setInput({ ...input, picture_url: temp_url })

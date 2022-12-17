@@ -54,10 +54,8 @@ export default function PortfilioEditPage() {
       zh_introduction:'',en_introduction:'',
       tools:[],
     }
-    console.log(state_data);
     setData(state_data)
     setInput(state_data)
-    console.log(input);
   },[])
 
 
@@ -132,7 +130,6 @@ const PictureList = ({input,setInput,isSetting}) =>{
     uploadTask.on("state_changed",(snapshot) => {
       const percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       setPercent(percent);
-      console.log(percent);
     },
     (err) => console.log(err),
     () => {

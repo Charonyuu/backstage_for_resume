@@ -209,7 +209,6 @@ const SkillModal = (props) =>{
 
   const handle_modal_save = () =>{
     const temp = [...input[skill]]
-    console.log(modalOpen.data);
     if (modalOpen.data) {
       const place = temp.findIndex((item)=> item.id === modalOpen.data.id)
       temp[place] = {id:modalOpen.data.id,sort: titleInput.sort,title:titleInput.title,content:list}

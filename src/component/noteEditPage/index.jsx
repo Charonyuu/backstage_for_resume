@@ -45,6 +45,17 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage
 const Quill_Container = ({input,setInput}) =>{
   const { quill,quillRef } = useQuill();
 
+  useEffect(() => {
+    if (quill) {
+      quill.clipboard.dangerouslyPasteHTML(input.content);
+      // quill.getModule('toolbar').addHandler('image', selectLocalImage);
+      quill.on('text-change', () => {
+        setInput({ ...input, content: quill.root.innerHTML})
+      });
+    }
+    
+  }, [quill]);
+
   const insertToEditor = (url) => {
     const range = quill.getSelection();
     quill.insertEmbed(range.index, 'image', url);
@@ -69,16 +80,7 @@ const Quill_Container = ({input,setInput}) =>{
       saveToServer(file);
     };
   };
-  useEffect(() => {
-    if (quill) {
-      quill.clipboard.dangerouslyPasteHTML(input.content);
-      quill.getModule('toolbar').addHandler('image', selectLocalImage);
-      quill.on('text-change', () => {
-        setInput({ ...input, content: quill.root.innerHTML})
-      });
-    }
-    
-  }, [quill]);
+
   return(
     <div className={styles.content_container}>
       <p>內容：</p>
