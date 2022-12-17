@@ -5,11 +5,11 @@ export function Input({title,value,func,setting,placeholder}) {
     <>
         <p>{title}</p>
         <input 
-          className={!setting ? styles.notSetting : null} 
+          className={(setting!==undefined && !setting) ? styles.notSetting : null} 
           type={'text'} value={value} 
           onChange={func}
           placeholder={placeholder}
-          readOnly={!setting} />
+          readOnly={setting ? !setting : false} />
     </>
   )
 }

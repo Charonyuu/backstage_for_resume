@@ -7,6 +7,8 @@ import ExperienceEditPage from './component/experienceEditPage'
 import PortfilioPage from './component/portfilioPage'
 import PortfilioEditPage from './component/portfilioEditPage'
 import NotePage from './component/notePage'
+import NoteEditPage from './component/noteEditPage'
+
 import styles from './app.module.scss'
 import { useAuth,AuthProvider } from "./context/AuthContext"
 import Nav from './component/nav'
@@ -47,21 +49,26 @@ function App() {
               <ExperienceEditPage />
             </Nav>
           </PrivateRoute>
-          <Route  path="/portfilio">
+          <PrivateRoute  path="/portfilio">
             <Nav>
               <PortfilioPage />
             </Nav>
-          </Route>
-          <Route  path="/portfilio_edit/:portfilio_name">
+          </PrivateRoute>
+          <PrivateRoute  path="/portfilio_edit/:portfilio_name">
             <Nav>
               <PortfilioEditPage />
             </Nav>
-          </Route>
-          <PrivateRoute  path="/note">
+          </PrivateRoute>
+          <Route  path="/note">
             <Nav>
               <NotePage />
             </Nav>
-          </PrivateRoute>
+          </Route>
+          <Route  path="/note_edit/:note_name">
+            <Nav>
+              <NoteEditPage />
+            </Nav>
+          </Route>
         </Switch>
       </AuthProvider>
     </div>

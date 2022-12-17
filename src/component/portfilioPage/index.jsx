@@ -6,21 +6,21 @@ import { MdOutlineAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 
-export default function ExperiencePage() {
-  const { fetch_portfilio_Data , delete_User_portfilio } = useAuth()
+export default function PortfilioPage() {
+  const { fetch_Collection_Data , delete_User_Collection_Data } = useAuth()
   const [loading,setLoading] = useState(true)
   const [data,setData] = useState()
 
   const handle_delete_portfilio = async(delete_name) => {
     const yes = confirm('確定刪除嗎？')
     if (!yes) return;
-    await delete_User_portfilio(delete_name)
+    await delete_User_Collection_Data('portfilio','portfilio_list',delete_name)
     fetch_Data();
   }
 
   const fetch_Data = () =>{
     setLoading(true)
-    fetch_portfilio_Data().then((data)=>{
+    fetch_Collection_Data('portfilio','portfilio_list').then((data)=>{
       setData(data)
       setLoading(false)
     })

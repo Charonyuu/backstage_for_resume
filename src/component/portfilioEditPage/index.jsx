@@ -8,8 +8,9 @@ import { AiOutlineRight,AiFillDelete } from "react-icons/ai";
 import {ReactComponent as Upload} from '../../assets/upload_icon.svg';
 import {ReactComponent as Delete} from '../../assets/delete_icon.svg';
 
-export default function ExperienceEditPage() {
-  const {update_User_portfilio_Data} = useAuth()
+export default function PortfilioEditPage() {
+  const {update_User_Collection_Data} = useAuth()
+
   const [data,setData] = useState()
   const [modalOpen,setModalOpen] = useState(false)
   const [input,setInput] =useState({
@@ -29,7 +30,7 @@ export default function ExperienceEditPage() {
   }
 
   const handle_save = ()=>{
-    update_User_portfilio_Data(input.zh_portfilio_name,input)
+    update_User_Collection_Data('portfilio','portfilio_list',input.zh_portfilio_name,input)
     setIsSetting(false)
   }
 
@@ -168,35 +169,6 @@ const PictureList = ({input,setInput,isSetting}) =>{
 }
 
 const ToolModal = ({input,setInput,setModalOpen}) =>{
-    const tool_ref = useRef(null)
-
-    const handle_modal_close = () =>{
-      setModalOpen(false)
-    }
-
-    const handle_tool_save = () =>{
-      if (!tool_ref.current.value ) return;
-      const temp = [...input.tools]
-      temp.push(tool_ref.current.value)
-      setInput({ ...input, tools: temp })
-      handle_modal_close()
-    } 
-    
-  return(
-    <Modal>
-      <div className={styles.modal}>
-        <h2>增加工具</h2>
-        <p>工具名稱:</p>
-        <input type="text" ref={tool_ref} placeholder='請輸入工具名稱'/>
-        <div className={styles.button_row}>
-          <Small_Btn title='取消' func={handle_modal_close}/>
-          <Small_Btn title='儲存' func={handle_tool_save}/>
-        </div>
-      </div>
-    </Modal>
-  )
-}
-const PictureModal = ({input,setModalOpen}) =>{
     const tool_ref = useRef(null)
 
     const handle_modal_close = () =>{

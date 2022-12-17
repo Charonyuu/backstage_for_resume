@@ -21,39 +21,27 @@ export function AuthProvider({ children }) {
   const update_User_Doc_Data = async(type,data) =>{
     await setDoc(doc(db, "user", type), data);
     alert('儲存成功')
+    history.back()
   }
-  const fetch_Experience_Data = async() =>{
-    const querySnapshot = await getDocs(collection(db, "user", 'experience','experience_list'));
+  const fetch_Collection_Data = async(collection_name,collection_list) =>{
+    const querySnapshot = await getDocs(collection(db, "user", collection_name,collection_list));
     let array = []
     querySnapshot.forEach((doc) => {
       array.push(doc.data());
     });
     return array;
   }
-  const update_User_Experience_Data = async(update_name,data) =>{
-    await setDoc(doc(db, "user", 'experience','experience_list',update_name), data);
+  const update_User_Collection_Data = async(collection_name,collection_list,update_name,data) =>{
+    await setDoc(doc(db, "user", collection_name,collection_list,update_name), data);
     alert('儲存成功')
+    history.back()
   }
-  const delete_User_Experience_Company = async(delete_name)=>{
-    await deleteDoc(doc(db, "user", 'experience','experience_list',delete_name))
+  const delete_User_Collection_Data = async(collection_name,collection_list,delete_name)=>{
+    await deleteDoc(doc(db, "user", collection_name,collection_list,delete_name))
     alert('刪除成功')
   }
-  const fetch_portfilio_Data = async() =>{
-    const querySnapshot = await getDocs(collection(db, "user", 'portfilio','portfilio_list'));
-    let array = []
-    querySnapshot.forEach((doc) => {
-      array.push(doc.data());
-    });
-    return array;
-  }
-  const update_User_portfilio_Data = async(update_name,data) =>{
-    await setDoc(doc(db, "user", 'portfilio','portfilio_list',update_name), data);
-    alert('儲存成功')
-  }
-  const delete_User_portfilio = async(delete_name)=>{
-    await deleteDoc(doc(db, "user", 'portfilio','portfilio_list',delete_name))
-    alert('刪除成功')
-  }
+
+  
   // function logout() {
   //   return auth.signOut()
   // }
@@ -67,12 +55,9 @@ export function AuthProvider({ children }) {
     login,
     fetch_User_Doc_Data,
     update_User_Doc_Data,
-    fetch_Experience_Data,
-    update_User_Experience_Data,
-    delete_User_Experience_Company,
-    fetch_portfilio_Data,
-    update_User_portfilio_Data,
-    delete_User_portfilio,
+    fetch_Collection_Data,
+    update_User_Collection_Data,
+    delete_User_Collection_Data,
   }
 
   return (

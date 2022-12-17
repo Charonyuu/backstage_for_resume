@@ -7,20 +7,20 @@ import { Link } from "react-router-dom";
 
 
 export default function ExperiencePage() {
-  const { fetch_Experience_Data , delete_User_Experience_Company } = useAuth()
+  const { fetch_Collection_Data , delete_User_Collection_Data } = useAuth()
   const [loading,setLoading] = useState(true)
   const [data,setData] = useState()
 
   const handle_delete_experience = async(delete_name) => {
     const yes = confirm('確定刪除嗎？')
     if (!yes) return;
-    await delete_User_Experience_Company(delete_name)
+    await delete_User_Collection_Data('experience','experience_list',delete_name)
     fetch_Data();
   }
 
   const fetch_Data = () =>{
     setLoading(true)
-    fetch_Experience_Data().then((data)=>{
+    fetch_Collection_Data('experience','experience_list').then((data)=>{
       setData(data)
       setLoading(false)
     })

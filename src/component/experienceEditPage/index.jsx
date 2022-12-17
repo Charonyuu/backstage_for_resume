@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { AiOutlineRight,AiFillDelete } from "react-icons/ai";
 
 export default function ExperienceEditPage() {
-  const {update_User_Experience_Data} = useAuth()
+  const {update_User_Collection_Data} = useAuth()
   const [data,setData] = useState()
   const [modalOpen,setModalOpen] = useState({open: false, id: '',data:null})
   const [input,setInput] =useState({
@@ -17,10 +17,7 @@ export default function ExperienceEditPage() {
       tools:[],
       exhibit: []
     })
-  const tool_ref = useRef(null)
-  const exhibit_web_name_ref = useRef(null)
-  const exhibit_web_url_ref = useRef(null)
-  const exhibit_web_content_ref = useRef(null)
+
   const [isSetting,setIsSetting] = useState(false)
 
   const handle_reset = () =>{
@@ -29,7 +26,7 @@ export default function ExperienceEditPage() {
   }
 
   const handle_save = ()=>{
-    update_User_Experience_Data(input.zh_company_name,input)
+    update_User_Collection_Data('experience','experience_list',input.zh_company_name,input)
     setIsSetting(false)
   }
 
@@ -37,23 +34,6 @@ export default function ExperienceEditPage() {
     setModalOpen({open:false,id:''})
   }
 
-  const handle_exhibit_save = () =>{
-    if (!exhibit_web_name_ref.current.value ) return;
-    const temp = [...input.exhibit]
-    temp.push({name:exhibit_web_name_ref.current.value,url:exhibit_web_url_ref.current.value,content:exhibit_web_content_ref.current.value})
-    setInput({ ...input, exhibit: temp})
-    alert('儲存成功')
-    handle_modal_close()
-  }
-
-  const handle_tool_save = () =>{
-    if (!tool_ref.current.value ) return;
-    const temp = [...input.tools]
-    temp.push(tool_ref.current.value)
-    setInput({ ...input, tools: temp })
-    alert('儲存成功')
-    handle_modal_close()
-  } 
 
   const handle_delete_tool = (tool_name) =>{
     const yes = confirm('你確定嗎？');
@@ -82,10 +62,8 @@ export default function ExperienceEditPage() {
       tools:[],
       exhibit: []
     }
-    console.log(state_data);
     setData(state_data)
     setInput(state_data)
-    console.log(input);
   },[])
 
 
@@ -148,35 +126,69 @@ export default function ExperienceEditPage() {
 
 
              {/* modal */}
-          {modalOpen.open && <Modal>
-            {modalOpen.id === 'tool' ?
-              <div className={styles.modal}>
-                <h2>增加工具</h2>
-                <p>工具名稱:</p>
-                <input type="text" ref={tool_ref} placeholder='請輸入工具名稱'/>
-                <div className={styles.button_row}>
-                  <Small_Btn title='取消' func={handle_modal_close}/>
-                  <Small_Btn title='儲存' func={handle_tool_save}/>
-                </div>
-              </div>
-              :
-              <div className={styles.modal}>
-                <h2>增加展示頁面</h2>
-                <p>網頁名稱:</p>
-                <input type="text" ref={exhibit_web_name_ref} placeholder='請輸入網頁名稱'/>
-                <p>網頁網址:</p>
-                <input type="text" ref={exhibit_web_url_ref} placeholder='請輸入網頁網址'/>
-                <p>網頁大綱:</p>
-                <textarea ref={exhibit_web_content_ref} placeholder='請輸入網頁內容'/>
-
-                <div className={styles.button_row}>
-                  <Small_Btn title='取消' func={handle_modal_close}/>
-                  <Small_Btn title='儲存' func={handle_exhibit_save}/>
-                </div>
-              </div>
-            } 
-          </Modal>}
+          {modalOpen.open && <ExperienceModal id={modalOpen.id} input={input} closeModal={handle_modal_close}/> }
         </div>
     </div>
+  )
+}
+
+const ExperienceModal = ({id,input,closeModal}) =>{
+  const tool_ref = useRef(null)
+  const exhibit_web_name_ref = useRef(null)
+  const exhibit_web_url_ref = useRef(null)
+  const exhibit_web_zh_content_ref = useRef(null)
+  const exhibit_web_en_content_ref = useRef(null)
+
+  const handle_exhibit_save = () =>{
+    if (!exhibit_web_name_ref.current.value ) return;
+    const temp = [...input.exhibit]
+    temp.push(
+      {
+        name:exhibit_web_name_ref.current.value,
+        url:exhibit_web_url_ref.current.value,
+        zh_content:exhibit_web_zh_content_ref.current.value,
+        en_content:exhibit_web_en_content_ref.current.value
+      })
+    setInput({ ...input, exhibit: temp})
+    alert('儲存成功')
+    closeModal()
+  }
+
+  const handle_tool_save = () =>{
+    if (!tool_ref.current.value ) return;
+    const temp = [...input.tools]
+    temp.push(tool_ref.current.value)
+    setInput({ ...input, tools: temp })
+    alert('儲存成功')
+    closeModal()
+  } 
+  return(
+    <Modal>
+      <div className={styles.modal}>
+      {id === 'tool' ?
+        <>
+          <h2>增加工具</h2>
+          <p>工具名稱:</p>
+          <input type="text" ref={tool_ref} placeholder='請輸入工具名稱'/>
+        </>
+        :
+        <>
+          <h2>增加展示頁面</h2>
+          <p>網頁名稱:</p>
+          <input type="text" ref={exhibit_web_name_ref} placeholder='請輸入網頁名稱'/>
+          <p>網頁網址:</p>
+          <input type="text" ref={exhibit_web_url_ref} placeholder='請輸入網頁網址'/>
+          <p>網頁中文大綱:</p>
+          <textarea ref={exhibit_web_zh_content_ref} placeholder='請輸入網頁內容'/>
+          <p>網頁英文大綱:</p>
+          <textarea ref={exhibit_web_en_content_ref} placeholder='請輸入網頁內容'/>
+        </>
+      } 
+      <div className={styles.button_row}>
+        <Small_Btn title='取消' func={closeModal}/>
+        <Small_Btn title='儲存' func={id === 'tool' ? handle_tool_save : handle_exhibit_save}/>
+      </div>
+      </div>
+    </Modal>
   )
 }
